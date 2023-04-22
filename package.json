@@ -17,8 +17,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config jest-e2e.json",
-    "dev:deps": "docker-compose -f .docker/dev/docker-compose-deps.yml"
+    "test:e2e": "dotenv -e .env.test -- jest --config jest-e2e.json",
+    "dev:deps": "docker-compose -f .docker/dev/docker-compose-deps.yml",
+    "migrate:dev": "dotenv -e .env.development -- npx prisma migrate dev",
+    "migrate:dev:test": "dotenv -e .env.test -- npx prisma migrate dev"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
