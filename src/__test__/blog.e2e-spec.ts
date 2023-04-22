@@ -59,4 +59,61 @@ describe('AppController (e2e)', () => {
       content: 'Lorem ipsum test!',
     });
   });
+
+  it('/blog/:id (GET) should return blog by id correctly', async () => {
+    const prismaService = app.get(PrismaService);
+    const { id } = await prismaService.blog.create({
+      data: {
+        title: 'Test test',
+        content: 'Lorem ipsum blog id!',
+      },
+    });
+    const { body, statusCode } = await request(app.getHttpServer()).get(
+      `/blog/${id}`,
+    );
+    expect(statusCode).toBe(200);
+    expect(body).toEqual({
+      id: expect.any(String),
+      title: 'Test test',
+      content: 'Lorem ipsum blog id!',
+    });
+  });
+
+  it('/blog (PUT) should update existing blog correctly', async () => {
+    const prismaService = app.get(PrismaService);
+    const { id } = await prismaService.blog.create({
+      data: {
+        title: 'Test test',
+        content: 'Lorem ipsum blog id!',
+      },
+    });
+    const { body, statusCode } = await request(app.getHttpServer())
+      .put(`/blog`)
+      .send({
+        id,
+        title: 'Test test updated',
+        content: 'New content added',
+      });
+    expect(statusCode).toBe(200);
+    expect(body).toEqual({
+      id,
+      title: 'Test test updated',
+      content: 'New content added',
+    });
+  });
+
+  it('/blog/:id (DELETE) should delete existing blog correctly', async () => {
+    const prismaService = app.get(PrismaService);
+    const data = await prismaService.blog.create({
+      data: {
+        title: 'Test test',
+        content: 'Lorem ipsum blog id!',
+      },
+    });
+    const { body, statusCode } = await request(app.getHttpServer()).delete(
+      `/blog/${data.id}`,
+    );
+    expect(statusCode).toBe(200);
+    expect(body).toEqual(data);
+  });
 });
