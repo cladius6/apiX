@@ -8,11 +8,8 @@ export class DatabaseCleaner {
 
   public async cleanup() {
     const tables = Prisma.dmmf.datamodel.models
-      .map(model => model.dbName || model.name)
-      .filter(name => name !== '_prisma_migrations');
-
-      console.log({tables})
-      console.log(`TRUNCATE TABLE ${tables.join(', ')} RESTART IDENTITY CASCADE`)
+      .map((model) => model.dbName || model.name)
+      .filter((name) => name !== '_prisma_migrations');
 
     return this.prismaService.$executeRawUnsafe(
       `TRUNCATE TABLE "${tables.join(', ')}" RESTART IDENTITY CASCADE`,
