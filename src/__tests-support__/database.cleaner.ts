@@ -11,8 +11,12 @@ export class DatabaseCleaner {
       .map((model) => model.dbName || model.name)
       .filter((name) => name !== '_prisma_migrations');
 
-    return this.prismaService.$executeRawUnsafe(
-      `TRUNCATE TABLE "${tables.join(', ')}" RESTART IDENTITY CASCADE`,
+    return Promise.all(
+      tables.map((table) =>
+        this.prismaService.$executeRawUnsafe(
+          `TRUNCATE TABLE "${table}" RESTART IDENTITY CASCADE;`,
+        ),
+      ),
     );
   }
 }
