@@ -25,9 +25,3 @@ export const clearDatabase = async (app: INestApplication): Promise<void> => {
   const databaseCleaner = app.get(DatabaseCleaner);
   await databaseCleaner.cleanup();
 };
-
-export const cleanupDbBeforeEach = (appGetter: () => INestApplication) => {
-  beforeEach(async () => {
-    await clearDatabase(appGetter());
-  });
-};

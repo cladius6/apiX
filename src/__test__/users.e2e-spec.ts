@@ -4,7 +4,7 @@ import * as request from 'supertest';
 import { AppModule } from '../app/app.module';
 import { PrismaService } from '../prisma/prisma.service';
 import {
-  cleanupDbBeforeEach,
+  clearDatabase,
   DatabaseCleaner,
 } from '../__tests-support__/database.cleaner';
 import { Role } from '@prisma/client';
@@ -22,7 +22,9 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  cleanupDbBeforeEach(() => app);
+  beforeEach(async () => {
+    await clearDatabase(app);
+  });
 
   it('/users (GET) should return all users correctly', async () => {
     await request(app.getHttpServer()).get('/users').expect(200).expect([]);

@@ -4,7 +4,7 @@ import * as request from 'supertest';
 import { AppModule } from '../app/app.module';
 import { PrismaService } from '../prisma/prisma.service';
 import {
-  cleanupDbBeforeEach,
+  clearDatabase,
   DatabaseCleaner,
 } from '../__tests-support__/database.cleaner';
 
@@ -21,7 +21,9 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  cleanupDbBeforeEach(() => app);
+  beforeEach(async () => {
+    await clearDatabase(app);
+  });
 
   it('/blog (GET) should return all blogs correctly', async () => {
     await request(app.getHttpServer()).get('/blog').expect(200).expect([]);
