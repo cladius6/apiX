@@ -48,18 +48,18 @@ describe('AppController (e2e)', () => {
     ]);
   });
 
-  it('/users (POST) should create user correctly', async () => {
+  it('/users/register (POST) should create user correctly', async () => {
     await request(app.getHttpServer()).get('/users').expect(200).expect([]);
     const { body, statusCode } = await request(app.getHttpServer())
-      .post('/users')
+      .post('/users/register')
       .send({
-        email: 'test@test.com',
+        email: 'testa@test.com',
         password: '12zx',
       });
     expect(statusCode).toBe(201);
     expect(body).toEqual({
       id: expect.any(String),
-      email: 'test@test.com',
+      email: 'testa@test.com',
       name: null,
       password: expect.any(String),
       role: Role.USER,

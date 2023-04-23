@@ -6,12 +6,15 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async getAll() {
-    return await this.usersService.getAll();
+  async findAll() {
+    return await this.usersService.findAll();
   }
 
-  @Post()
+  @Post('register')
   async createUser(@Body() createUser: any) {
     return await this.usersService.createUser(createUser);
   }
+
+  //   @Post('login')
+  //   async login(@Body() loginUser: any) {}
 }
